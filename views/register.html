@@ -1,0 +1,32 @@
+
+<% include header.html%>
+		<div class="container-fluid " style="margin: 10% 20%;">
+			<form class="form-horizontal" method="post">
+				<fieldset>
+					<legend>用户注册</legend>
+					<div class="form-group">
+						<label class=" col-sm-2  control-label" for="username">用户名</label>
+						<div class=" col-sm-4">
+							<input type="text" class="input-xlarge" id="username" name="username" placeholder="用户名">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="password">密码</label>
+						<div class=" col-sm-4">
+							<input  class="input-xlarge" id="password" name="password" onfocus="this.type='password'">
+						</div>
+					</div>
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">注册</button>
+						<a  href="/login" class="col-md-offset-1" style="">登陆</a></button>
+					</div>
+				</fieldset>
+			</form>
+			<div class="alert alert-success" role="alert" id="tips"><%=tips%></div>
+		</div>
+		<script>
+			document.getElementById("password").value='';
+			document.getElementById("password").innerHTML='';
+		</script>
+<% include footer.html%>
+

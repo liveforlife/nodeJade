@@ -1,0 +1,97 @@
+
+<% include header.html%>
+		<div class="container-fluid " id="container" style="background: url(images/61r58PICXMj_1024.jpg) 100% 100%;padding:5% 10% ;">
+			<div class="row" style="display: flex;flex-direction: row;align-items:center">
+				<img src="images/22.png" alt="..." class="img-circle" style="height: 150px;width: 150px;">
+				<h1 class="col-lg-offset-1">的博客</h1>								
+			</div>
+			<div class="row" style="margin-top: 20px;background-color: #FFF;" >
+			    <form class="form-horizontal" >
+			    	<legend>修改个人信息</legend>
+					<fieldset>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label" for="username">姓名</label>
+							<div class="col-sm-4">
+								<input type="text"  class="form-control"  id="name" name="name" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label" for="sex">性别</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="sex" name="sex"  >
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label" for="married">婚姻</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="married" name="married"  >
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label" for="experice">经历</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="experice" name="experice"  >
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label" for="introduce">简介</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="introduce" name="introduce"  >
+							</div>
+						</div>
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-primary" onclick="updateUserInfo()">完成</button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<script>
+			setTimeout(function(){  
+	            document.getElementsByTagName('body')[0].style.height = window.innerHeight+'px';  
+	            document.getElementById("container").style.height=window.innerHeight+'px';
+	        },20);
+	        $.ajax({
+	        	type:"post",
+	        	url:"/userInfo.action",
+	        	data:{
+	        		'username':'<%=userName%>',
+	        	},
+	        	async:true,
+	        	success:function(data){
+	        		var data=JSON.parse(data);
+	        		if(data.message==='success'){
+	        			var data=data.data;
+	        			console.log(data);
+	        			document.getElementById("name").value=data.name;
+	        			document.getElementById("sex").value=data.sex;
+	        			document.getElementById("married").value=data.married;
+	        			document.getElementById("experice").value=data.experice;
+	        			document.getElementById("introduce").value=data.introduce;
+	        		}
+	        	}
+	        });
+	        function updateUserInfo(){
+	        	$.ajax({
+	        		type:"post",
+	        		url:"/updateUserInfo.action",
+	        		data:{
+	        			name:document.getElementById("name").value,
+	        			sex:document.getElementById("sex").value,
+	        			married:document.getElementById("married").value,
+	        			experice:document.getElementById("experice").value,
+	        			introduce:document.getElementById("introduce").value,
+	        		},
+	        		async:true,
+	        		success:function(data){
+	        			var data=JSON.parse(data);
+	        			if(data.message==='success'){
+							alert("修改成功");
+							window.location.href='http://172.20.11.253:3000/';
+						}
+	        		}
+	        	});
+	        }
+		</script>
+<% include footer.html%>
+

@@ -1,0 +1,94 @@
+<% include header.html%>
+		<div class="container-fluid" id="container" style="background: url(images/61r58PICXMj_1024.jpg) 100% 100%;padding:5% 10% ;">
+		  <div class="row" style="margin-top:5% ;color: #337ab7;">
+		    <h3 class="col-xs-8 col-lg-offset-1"><%= userName%>博客</h3>
+		    <div class="col-xs-2 col-lg-offset-1 text-right" style="vertical-align: middle;">
+		    	<span ><a id="stutas" style="padding-right: 10px;" ></a><a id="register" style="display: none;"></a></span>
+		    </div>
+		  </div>
+		  <div class="row">
+		  	<div class="col-xs-9">
+		  		<button class="btn btn-default" type="submit">
+			  		<a href="" >首页</a>
+			  	</button>
+			  	<button class="btn btn-default" type="submit">
+			  		<a href="" >博客目录</a>
+			  	</button>
+			  	<button class="btn btn-default" type="submit">
+			  		<a href="/userInfo" >关于我</a>
+			  	</button>
+		  	</div>
+		  	<div class="col-xs-3  text-right">
+		  		<button class="btn btn-default" type="submit">
+			  		<a href="/article" >文章发表</a>
+			  	</button>
+			  	<button class="btn btn-default" type="submit">
+			  		<a href="/userInfoEdit" >个人中心</a>
+			  	</button>
+		  	</div>
+		  	
+		  </div>
+		  <div class="row" style="margin-top: 20px;background-color: #FFF;" >
+		    <p style="padding: 20px;">全部博文</p>
+		    <table class="table " id="articleList" style="margin: 0px 2%;width: 96%;color: #464646;">
+			</table>
+		  
+		  </div>
+		</div>
+		
+		<script>
+		  setTimeout(function(){  
+            document.getElementsByTagName('body')[0].style.height = window.innerHeight+'px';  
+            document.getElementById("container").style.height=window.innerHeight+'px';
+        },20);    
+		//document.getElementsByName('body')[0].style.height=window.screen.availWidth +'px';
+		console.log(window.screen.availWidth);
+			var a=<%=stutas%>;
+			if(a==0){
+				document.getElementById('stutas').innerHTML="登陆";
+				document.getElementById("stutas").href='/login';
+				document.getElementById("register").innerHTML='注册';
+				document.getElementById("register").href='/register';
+				document.getElementById("register").style.display="inline";
+			}else{
+				document.getElementById('stutas').innerHTML='退出';
+				document.getElementById("stutas").href='/loginOut';
+			}
+			$.ajax({
+				type:"get",
+				url:"/getArticle",
+				async:true,
+				success:function(data){
+					var data=JSON.parse(data);
+					if(data.message==='success'){
+						var result=data.data;
+						var list=document.getElementById("articleList");
+						var stri=''
+						$.each(result, function(i,list) {
+							stri+='<tr ><td class="col-md-10" style="color:#3E73A0">'+result[i].articleName+'</td>'
+							+'<td class="col-md-2" style="color:#3E73A0"><span>'+list.articleTime+'</span>'
+							+'<a style="padding:0px 10px" href="/editArticle?articleName='+result[i].articleName+'">编辑</a><a  onclick=deleteAr("'+result[i].articleName+'")>删除</a></td></tr>';
+						});
+						list.innerHTML=stri;
+					}
+				}
+			});
+			function deleteAr(arr){
+				$.ajax({
+					type:"post",
+					url:"/delete?articleName="+arr,
+					async:true,
+					success:function(data){
+						var data=JSON.parse(data);
+						console.log(data.message);
+						if(data.message==='success'){
+							alert('删除数据成功');
+								location.reload();
+						}
+					}
+				});
+				
+			}
+			
+		</script>
+<% include footer.html%>
